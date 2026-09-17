@@ -3,6 +3,10 @@
   place-items: center;
 }
 
+.sm {
+  width: 132px;
+}
+
 .md {
   width: 200px;
 }

@@ -9,7 +9,7 @@ export type MascotMood =
 
 type MascotProps = {
   mood?: MascotMood
-  size?: 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg'
   className?: string
 }
 

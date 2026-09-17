@@ -1,0 +1,20 @@
+.wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-bottom: 56px;
+}
+
+.jar {
+  width: 88px;
+  height: auto;
+  overflow: visible;
+}
+
+.count {
+  font-family: var(--font-display);
+  font-size: 40px;
+  color: var(--color-ink);
+}

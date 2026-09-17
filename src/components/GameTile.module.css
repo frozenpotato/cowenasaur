@@ -1,0 +1,91 @@
+.tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 220px;
+  padding: 8px 8px 12px;
+  border-radius: var(--radius-tile);
+  background: var(--color-canvas);
+  border: 3px solid var(--tile-accent);
+  box-shadow:
+    0 var(--edge-toy) 0 var(--tile-edge),
+    var(--shadow-warm);
+  transform: translateY(0);
+  transition:
+    transform var(--duration-press) var(--ease-out),
+    box-shadow var(--duration-press) var(--ease-out);
+}
+
+.selected {
+  transform: translateY(-4px);
+  box-shadow:
+    0 10px 0 var(--tile-edge),
+    0 16px 24px rgba(80, 50, 20, 0.16);
+}
+
+.coral {
+  --tile-accent: var(--color-coral);
+  --tile-edge: var(--color-coral-deep);
+}
+
+.teal {
+  --tile-accent: var(--color-sky);
+  --tile-edge: var(--color-sky-deep);
+}
+
+.gold {
+  --tile-accent: var(--color-gold);
+  --tile-edge: var(--color-gold-deep);
+}
+
+.leaf {
+  --tile-accent: var(--color-meadow);
+  --tile-edge: var(--color-meadow-deep);
+}
+
+.violet {
+  --tile-accent: var(--color-violet);
+  --tile-edge: var(--color-violet-deep);
+}
+
+.face {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 16px 12px 8px;
+  border: 0;
+  border-radius: 24px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.face:focus-visible {
+  outline: 4px solid var(--tile-accent);
+  outline-offset: 4px;
+}
+
+.art {
+  width: 132px;
+  height: 88px;
+}
+
+.label {
+  font-family: var(--font-display);
+  font-size: 30px;
+  color: var(--color-ink);
+}
+
+.stars {
+  display: flex;
+  gap: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tile,
+  .selected {
+    transition: none;
+    transform: none;
+  }
+}
