@@ -1,0 +1,126 @@
+.shell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  min-height: 100dvh;
+  --shell-accent: var(--color-coral);
+  --shell-edge: var(--color-coral-deep);
+}
+
+.coral {
+  --shell-accent: var(--color-coral);
+  --shell-edge: var(--color-coral-deep);
+}
+
+.teal {
+  --shell-accent: var(--color-sky);
+  --shell-edge: var(--color-sky-deep);
+}
+
+.gold {
+  --shell-accent: var(--color-gold);
+  --shell-edge: var(--color-gold-deep);
+}
+
+.leaf {
+  --shell-accent: var(--color-meadow);
+  --shell-edge: var(--color-meadow-deep);
+}
+
+.violet {
+  --shell-accent: var(--color-violet);
+  --shell-edge: var(--color-violet-deep);
+}
+
+.chrome {
+  display: grid;
+  grid-template-columns: 88px 1fr auto;
+  align-items: center;
+  padding: var(--space-3) 160px var(--space-2) var(--space-3);
+  column-gap: var(--space-3);
+}
+
+.home {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border: 0;
+  border-radius: 50%;
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  box-shadow: 0 6px 0 #e2d4b4, var(--shadow-warm);
+  cursor: pointer;
+}
+
+.home:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #e2d4b4, var(--shadow-warm);
+}
+
+.home:focus-visible {
+  outline: 4px solid var(--color-coral);
+  outline-offset: 4px;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  padding: var(--space-1) 0 var(--space-2);
+}
+
+.dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+}
+
+.dotOn {
+  background: var(--shell-accent);
+}
+
+.dotOff {
+  background: #e5dcc8;
+}
+
+.play {
+  display: grid;
+  place-items: center;
+  padding: var(--space-3) var(--space-4) var(--space-6);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  background: var(--color-canvas);
+}
+
+.shell:has(.overlay) .chrome,
+.shell:has(.overlay) .dots {
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.reward {
+  display: flex;
+  gap: var(--space-2);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home:active {
+    transform: none;
+  }
+}

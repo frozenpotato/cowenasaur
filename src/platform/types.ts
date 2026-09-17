@@ -10,6 +10,11 @@ export type GameProgress = {
   unlockedDifficulties: Difficulty[]
   selectedDifficulty: Difficulty
   bestStarsByDifficulty: Partial<Record<Difficulty, Stars>>
+  timesPlayed: number
 }
 
 export const DIFFICULTIES: Difficulty[] = [1, 2, 3]
+
+export type AppView =
+  | { screen: 'dashboard' }
+  | { screen: 'playing'; gameId: GameId }

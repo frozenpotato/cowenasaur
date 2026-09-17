@@ -7,7 +7,11 @@ import { bestStarsFor, useProfile } from '../platform/profile'
 import type { Difficulty, GameId } from '../platform/types'
 import styles from './Dashboard.module.css'
 
-export function Dashboard() {
+type DashboardProps = {
+  onPlay: (gameId: GameId) => void
+}
+
+export function Dashboard({ onPlay }: DashboardProps) {
   const { totalStars, progress, selectDifficulty } = useProfile()
   const [mood, setMood] = useState<MascotMood>('idle')
   const [selectedGame, setSelectedGame] = useState<GameId | null>(null)
@@ -26,8 +30,7 @@ export function Dashboard() {
   }
 
   function handleSelect(gameId: GameId) {
-    setSelectedGame(gameId)
-    setMoodFor('celebrating', 1200)
+    onPlay(gameId)
   }
 
   function handleDifficulty(gameId: GameId, difficulty: Difficulty) {

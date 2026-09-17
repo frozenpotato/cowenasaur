@@ -22,3 +22,11 @@ export const GAMES: GameDefinition[] = [
   { id: 'counting', label: 'Count', accent: 'gold', Illustration: CountArt },
   { id: 'identify', label: 'Animals', accent: 'leaf', Illustration: AnimalsArt },
 ]
+
+export function getGame(id: GameId): GameDefinition {
+  const game = GAMES.find((entry) => entry.id === id)
+  if (!game) {
+    throw new Error(`Unknown game: ${id}`)
+  }
+  return game
+}

@@ -1,11 +1,12 @@
 import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
 import { GAMES } from './registry'
-import type { Difficulty, GameId, GameProgress, Stars } from './types'
+import { DIFFICULTIES, type Difficulty, type GameId, type GameProgress, type Stars } from './types'
 
 type ProfileValue = {
   totalStars: number
   progress: Record<GameId, GameProgress>
   selectDifficulty: (gameId: GameId, difficulty: Difficulty) => boolean
+  recordResult: (gameId: GameId, difficulty: Difficulty, stars: Stars) => void
 }
 
 const ProfileContext = createContext<ProfileValue | null>(null)
@@ -15,6 +16,7 @@ function freshProgress(): GameProgress {
     unlockedDifficulties: [1],
     selectedDifficulty: 1,
     bestStarsByDifficulty: {},
+    timesPlayed: 0,
   }
 }
 
@@ -26,7 +28,7 @@ function createProgress(): Record<GameId, GameProgress> {
 }
 
 export function ProfileProvider({ children }: { children: ReactNode }) {
-  const [totalStars] = useState(0)
+  const [totalStars, setTotalStars] = useState(0)
   const [progress, setProgress] = useState(createProgress)
 
   const value = useMemo<ProfileValue>(
@@ -43,6 +45,29 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
           [gameId]: { ...prev[gameId], selectedDifficulty: difficulty },
         }))
         return true
+      },
+      recordResult(gameId, difficulty, stars) {
+        setTotalStars((count) => count + stars)
+        setProgress((prev) => {
+          const current = prev[gameId]
+          const previousBest = current.bestStarsByDifficulty[difficulty] ?? 0
+          const unlocked = new Set(current.unlockedDifficulties)
+          if (stars >= 2 && difficulty < 3) {
+            unlocked.add((difficulty + 1) as Difficulty)
+          }
+          return {
+            ...prev,
+            [gameId]: {
+              ...current,
+              timesPlayed: current.timesPlayed + 1,
+              bestStarsByDifficulty: {
+                ...current.bestStarsByDifficulty,
+                [difficulty]: stars > previousBest ? stars : previousBest,
+              },
+              unlockedDifficulties: DIFFICULTIES.filter((level) => unlocked.has(level)),
+            },
+          }
+        })
       },
     }),
     [progress, totalStars],
