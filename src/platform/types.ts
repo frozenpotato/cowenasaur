@@ -1,8 +1,8 @@
-export type GameId = 'memory' | 'words' | 'difference' | 'counting' | 'identify'
+export type GameId = 'memory' | 'words' | 'difference' | 'counting' | 'identify' | 'typing'
 
 export type Difficulty = 1 | 2 | 3
 
-export type Accent = 'coral' | 'teal' | 'gold' | 'leaf' | 'violet'
+export type Accent = 'coral' | 'teal' | 'gold' | 'leaf' | 'violet' | 'apricot'
 
 export type Stars = 1 | 2 | 3
 

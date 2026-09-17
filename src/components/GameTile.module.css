@@ -48,6 +48,11 @@
   --tile-edge: var(--color-violet-deep);
 }
 
+.apricot {
+  --tile-accent: var(--color-apricot);
+  --tile-edge: var(--color-apricot-deep);
+}
+
 .face {
   display: flex;
   flex-direction: column;

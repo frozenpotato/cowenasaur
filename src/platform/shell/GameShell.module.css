@@ -33,6 +33,11 @@
   --shell-edge: var(--color-violet-deep);
 }
 
+.apricot {
+  --shell-accent: var(--color-apricot);
+  --shell-edge: var(--color-apricot-deep);
+}
+
 .chrome {
   display: grid;
   grid-template-columns: 88px 1fr auto;

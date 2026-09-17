@@ -57,6 +57,7 @@ Home inside the shell is the way out. Browser Back is not a designed exit.
 | Spot | `difference` | teal | [games/spot.md](games/spot.md) |
 | Count | `counting` | gold | [games/count.md](games/count.md) |
 | Animals | `identify` | leaf | [games/animals.md](games/animals.md) |
+| Type | `typing` | apricot | [games/type.md](games/type.md) |
 
 ## Layout
 
@@ -99,13 +100,14 @@ Every play field receives:
 - Retry remounts the field with `key={session}`. Do not reset IndexedDB on retry.
 - Keep domain rules in `*Logic.ts`. Keep SVG/interaction in the game component.
 
-Three mechanic families:
+Three mechanic families (plus type):
 
 | Family | Games | Shared helper |
 | --- | --- | --- |
 | Choice | Count, Words, Animals | `useChoiceRound` (Words/Animals); Count inlines the same loop |
 | Memory | Memory | flip-match reducer in the game |
 | Difference | Spot | dual scenes + hotspots |
+| Type | Type | letter-by-letter in the game |
 
 Do not collapse these into one engine.
 
@@ -160,3 +162,4 @@ Skip canvas confetti and hide CSS bits when `prefers-reduced-motion: reduce`.
 - [Spot](games/spot.md)
 - [Count](games/count.md)
 - [Animals](games/animals.md)
+- [Type](games/type.md)

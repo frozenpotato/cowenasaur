@@ -1,0 +1,116 @@
+.board {
+  display: grid;
+  place-items: center;
+  width: min(920px, 94vw);
+}
+
+.word {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+}
+
+.leaving {
+  animation: word-leave 0.32s var(--ease-out) both;
+  pointer-events: none;
+}
+
+.entering {
+  animation: word-enter 0.38s var(--ease-toy) both;
+  pointer-events: none;
+}
+
+@keyframes word-leave {
+  from {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+
+  to {
+    opacity: 0;
+    transform: scale(0.88) translateY(-18px);
+  }
+}
+
+@keyframes word-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.88) translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.letter {
+  min-width: 64px;
+  height: 88px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 22px;
+  color: var(--color-ink-soft);
+  background: var(--color-canvas);
+  box-shadow: 0 6px 0 #e2d4b4, var(--shadow-warm);
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: lowercase;
+  cursor: pointer;
+}
+
+.current {
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  box-shadow: 0 8px 0 var(--color-apricot-deep), var(--shadow-warm);
+  transform: translateY(-6px) scale(1.08);
+}
+
+.done {
+  color: var(--color-ink);
+  background: var(--color-gold);
+  box-shadow: 0 6px 0 var(--color-gold-deep), var(--shadow-warm);
+  cursor: default;
+}
+
+.letter:active:not(:disabled):not(.done) {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 var(--color-apricot-deep), var(--shadow-warm);
+}
+
+.letter:focus-visible {
+  outline: 4px solid var(--color-apricot);
+  outline-offset: 4px;
+}
+
+.wrong {
+  background: var(--color-apricot);
+  animation: letter-shake 0.45s var(--ease-out);
+}
+
+@keyframes letter-shake {
+  0%,
+  100% {
+    transform: translateY(-6px) scale(1.08);
+  }
+  25% {
+    transform: translateY(-6px) scale(1.08) translateX(-10px);
+  }
+  75% {
+    transform: translateY(-6px) scale(1.08) translateX(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .current,
+  .letter:active:not(:disabled):not(.done),
+  .wrong,
+  .leaving,
+  .entering {
+    animation: none;
+    transform: none;
+  }
+}

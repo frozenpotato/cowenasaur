@@ -69,3 +69,46 @@ export function AnimalsArt({ className }: ArtProps) {
     </svg>
   )
 }
+
+export function TypeArt({ className }: ArtProps) {
+  return (
+    <svg className={className} viewBox="0 0 120 88" aria-hidden="true">
+      <rect x="18" y="22" width="28" height="36" rx="8" fill="var(--color-apricot)" />
+      <rect x="46" y="14" width="28" height="44" rx="8" fill="var(--color-gold)" />
+      <rect x="74" y="22" width="28" height="36" rx="8" fill="var(--color-apricot)" />
+      <text
+        x="32"
+        y="48"
+        textAnchor="middle"
+        fill="var(--color-ink)"
+        fontFamily="Fredoka, sans-serif"
+        fontSize="22"
+        fontWeight="700"
+      >
+        a
+      </text>
+      <text
+        x="60"
+        y="44"
+        textAnchor="middle"
+        fill="var(--color-ink)"
+        fontFamily="Fredoka, sans-serif"
+        fontSize="22"
+        fontWeight="700"
+      >
+        b
+      </text>
+      <text
+        x="88"
+        y="48"
+        textAnchor="middle"
+        fill="var(--color-ink)"
+        fontFamily="Fredoka, sans-serif"
+        fontSize="22"
+        fontWeight="700"
+      >
+        c
+      </text>
+    </svg>
+  )
+}

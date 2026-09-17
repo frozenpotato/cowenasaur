@@ -4,6 +4,7 @@ import {
   CountArt,
   MemoryArt,
   SpotArt,
+  TypeArt,
   WordsArt,
 } from '../assets/illustrations/games'
 import type { Accent, GameId } from './types'
@@ -21,6 +22,7 @@ export const GAMES: GameDefinition[] = [
   { id: 'difference', label: 'Spot', accent: 'teal', Illustration: SpotArt },
   { id: 'counting', label: 'Count', accent: 'gold', Illustration: CountArt },
   { id: 'identify', label: 'Animals', accent: 'leaf', Illustration: AnimalsArt },
+  { id: 'typing', label: 'Type', accent: 'apricot', Illustration: TypeArt },
 ]
 
 export function getGame(id: GameId): GameDefinition {
