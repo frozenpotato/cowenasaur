@@ -1,0 +1,82 @@
+.root {
+  display: grid;
+  place-items: center;
+}
+
+.md {
+  width: 200px;
+}
+
+.lg {
+  width: 340px;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.tail {
+  transform-origin: 160px 160px;
+}
+
+.body,
+.head {
+  transform-box: fill-box;
+}
+
+.head {
+  transform-origin: 50% 70%;
+  transition: transform var(--duration-mood) var(--ease-toy);
+}
+
+.eyes {
+  transform-origin: 108px 88px;
+}
+
+.root[data-mood='idle'] .tail {
+  animation: mascot-wag 3.2s var(--ease-out) infinite;
+}
+
+.root[data-mood='idle'] .eyes {
+  animation: mascot-blink 4.4s ease-in-out infinite;
+}
+
+.root[data-mood='thinking'] .head {
+  transform: rotate(8deg) translate(4px, -2px);
+}
+
+.root[data-mood='tryAgain'] .head {
+  transform: rotate(-8deg);
+}
+
+.root[data-mood='celebrating'] .svg,
+.root[data-mood='completed'] .svg {
+  animation: mascot-bounce 0.7s var(--ease-toy) infinite;
+}
+
+.root[data-mood='tryAgain'] .svg {
+  animation: mascot-wiggle 0.7s var(--ease-toy) 2;
+}
+
+.starBurst {
+  animation: mascot-bounce 1s var(--ease-toy) infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tail,
+  .eyes,
+  .starBurst,
+  .root[data-mood='idle'] .tail,
+  .root[data-mood='idle'] .eyes,
+  .root[data-mood='celebrating'] .svg,
+  .root[data-mood='completed'] .svg,
+  .root[data-mood='tryAgain'] .svg {
+    animation: none;
+  }
+
+  .head {
+    transition: none;
+  }
+}
