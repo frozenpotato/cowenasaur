@@ -1,4 +1,7 @@
-import type { Difficulty, Stars } from '../../platform/types'
+import { randomInt, shuffle } from '../../platform/scoring'
+import type { Difficulty } from '../../platform/types'
+
+export { starsFromMistakes } from '../../platform/scoring'
 
 export type DinoSpot = {
   x: number
@@ -75,16 +78,6 @@ export function roundsForDifficulty(difficulty: Difficulty): number {
   return SPECS[difficulty].rounds
 }
 
-export function starsFromMistakes(mistakes: number): Stars {
-  if (mistakes <= 0) {
-    return 3
-  }
-  if (mistakes === 1) {
-    return 2
-  }
-  return 1
-}
-
 export function buildCountingSession(difficulty: Difficulty): CountingRound[] {
   const spec = SPECS[difficulty]
   const rounds: CountingRound[] = []
@@ -121,19 +114,4 @@ function pickChoices(answer: number, spec: CountingSpec): number[] {
 
 function integers(min: number, max: number): number[] {
   return Array.from({ length: max - min + 1 }, (_, index) => min + index)
-}
-
-function randomInt(min: number, max: number): number {
-  return min + Math.floor(Math.random() * (max - min + 1))
-}
-
-function shuffle<T>(items: T[]): T[] {
-  const next = [...items]
-  for (let index = next.length - 1; index > 0; index -= 1) {
-    const swap = Math.floor(Math.random() * (index + 1))
-    const current = next[index]
-    next[index] = next[swap]
-    next[swap] = current
-  }
-  return next
 }

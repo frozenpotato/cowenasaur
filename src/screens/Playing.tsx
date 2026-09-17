@@ -2,11 +2,18 @@ import { useState } from 'react'
 import type { MascotMood } from '../components/Mascot'
 import { CountingGame } from '../games/counting/CountingGame'
 import { roundsForDifficulty } from '../games/counting/countingLogic'
+import { DifferenceGame } from '../games/difference/DifferenceGame'
+import { differenceCountFor } from '../games/difference/differenceLogic'
+import { IdentifyGame } from '../games/identify/IdentifyGame'
+import { identifyRoundsFor } from '../games/identify/identifyLogic'
+import { MemoryGame } from '../games/memory/MemoryGame'
+import { memoryPairsFor } from '../games/memory/memoryLogic'
+import { WordsGame } from '../games/words/WordsGame'
+import { wordsRoundsFor } from '../games/words/wordsLogic'
 import { useProfile } from '../platform/profile'
 import { getGame } from '../platform/registry'
 import { GameShell } from '../platform/shell/GameShell'
-import { PlaceholderPlay, TOTAL_ROUNDS } from '../platform/shell/PlaceholderPlay'
-import type { GameId, Stars } from '../platform/types'
+import type { Difficulty, GameId, Stars } from '../platform/types'
 
 type PlayingProps = {
   gameId: GameId
@@ -17,8 +24,7 @@ export function Playing({ gameId, onHome }: PlayingProps) {
   const game = getGame(gameId)
   const { progress, recordResult } = useProfile()
   const difficulty = progress[gameId].selectedDifficulty
-  const counting = gameId === 'counting'
-  const totalRounds = counting ? roundsForDifficulty(difficulty) : TOTAL_ROUNDS
+  const totalRounds = roundsFor(gameId, difficulty)
   const [session, setSession] = useState(0)
   const [round, setRound] = useState(0)
   const [mood, setMood] = useState<MascotMood>('thinking')
@@ -47,23 +53,58 @@ export function Playing({ gameId, onHome }: PlayingProps) {
       onHome={onHome}
       onRetry={handleRetry}
     >
-      {counting ? (
-        <CountingGame
-          key={session}
-          difficulty={difficulty}
-          onMood={setMood}
-          onRound={setRound}
-          onComplete={handleComplete}
-        />
-      ) : (
-        <PlaceholderPlay
-          key={session}
-          game={game}
-          onMood={setMood}
-          onRound={setRound}
-          onComplete={handleComplete}
-        />
-      )}
+      <PlayField
+        key={session}
+        gameId={gameId}
+        difficulty={difficulty}
+        onMood={setMood}
+        onRound={setRound}
+        onComplete={handleComplete}
+      />
     </GameShell>
   )
+}
+
+function PlayField({
+  gameId,
+  difficulty,
+  onMood,
+  onRound,
+  onComplete,
+}: {
+  gameId: GameId
+  difficulty: Difficulty
+  onMood: (mood: MascotMood) => void
+  onRound: (round: number) => void
+  onComplete: (stars: Stars) => void
+}) {
+  const props = { difficulty, onMood, onRound, onComplete }
+
+  switch (gameId) {
+    case 'counting':
+      return <CountingGame {...props} />
+    case 'words':
+      return <WordsGame {...props} />
+    case 'identify':
+      return <IdentifyGame {...props} />
+    case 'memory':
+      return <MemoryGame {...props} />
+    case 'difference':
+      return <DifferenceGame {...props} />
+  }
+}
+
+function roundsFor(gameId: GameId, difficulty: Difficulty) {
+  switch (gameId) {
+    case 'counting':
+      return roundsForDifficulty(difficulty)
+    case 'words':
+      return wordsRoundsFor(difficulty)
+    case 'identify':
+      return identifyRoundsFor(difficulty)
+    case 'memory':
+      return memoryPairsFor(difficulty)
+    case 'difference':
+      return differenceCountFor(difficulty)
+  }
 }

@@ -1,0 +1,67 @@
+.board {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  width: min(920px, 96vw);
+}
+
+.scene {
+  position: relative;
+  width: min(420px, 92vw);
+  overflow: hidden;
+  border-radius: 28px;
+  box-shadow: 0 8px 0 var(--color-sky-deep), var(--shadow-warm);
+  cursor: pointer;
+}
+
+.scene svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.hotspot {
+  position: absolute;
+  padding: 0;
+  border: 4px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.hotspot:focus-visible {
+  outline: 4px solid var(--color-sky);
+  outline-offset: 2px;
+}
+
+.found {
+  border-color: var(--color-gold);
+  background: rgba(233, 180, 76, 0.18);
+  cursor: default;
+}
+
+.miss {
+  animation: scene-shake 0.45s var(--ease-out);
+}
+
+@keyframes scene-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-8px);
+  }
+  75% {
+    transform: translateX(8px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .miss {
+    animation: none;
+  }
+}
