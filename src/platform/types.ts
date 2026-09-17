@@ -11,6 +11,7 @@ export type GameProgress = {
   selectedDifficulty: Difficulty
   bestStarsByDifficulty: Partial<Record<Difficulty, Stars>>
   timesPlayed: number
+  lastPlayedAt: number
 }
 
 export const DIFFICULTIES: Difficulty[] = [1, 2, 3]

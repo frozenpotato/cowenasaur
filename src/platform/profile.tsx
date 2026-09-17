@@ -1,8 +1,16 @@
-import { createContext, useContext, useMemo, useState, type ReactNode } from 'react'
-import { GAMES } from './registry'
-import { DIFFICULTIES, type Difficulty, type GameId, type GameProgress, type Stars } from './types'
+import { createContext, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react'
+import { loadState, saveState } from './persistence'
+import {
+  applyResult,
+  applyStars,
+  createProgress,
+  emptyProfileState,
+  type ProfileState,
+} from './progressState'
+import type { Difficulty, GameId, GameProgress, Stars } from './types'
 
 type ProfileValue = {
+  ready: boolean
   totalStars: number
   progress: Record<GameId, GameProgress>
   selectDifficulty: (gameId: GameId, difficulty: Difficulty) => boolean
@@ -11,66 +19,71 @@ type ProfileValue = {
 
 const ProfileContext = createContext<ProfileValue | null>(null)
 
-function freshProgress(): GameProgress {
-  return {
-    unlockedDifficulties: [1],
-    selectedDifficulty: 1,
-    bestStarsByDifficulty: {},
-    timesPlayed: 0,
-  }
-}
-
-function createProgress(): Record<GameId, GameProgress> {
-  return Object.fromEntries(GAMES.map((game) => [game.id, freshProgress()])) as Record<
-    GameId,
-    GameProgress
-  >
-}
-
 export function ProfileProvider({ children }: { children: ReactNode }) {
+  const [ready, setReady] = useState(false)
   const [totalStars, setTotalStars] = useState(0)
   const [progress, setProgress] = useState(createProgress)
+  const snapshot = useRef<ProfileState>(emptyProfileState())
+
+  useEffect(() => {
+    let cancelled = false
+
+    void loadState().then((loaded) => {
+      if (cancelled) {
+        return
+      }
+      snapshot.current = loaded
+      setTotalStars(loaded.totalStars)
+      setProgress(loaded.progress)
+      setReady(true)
+    })
+
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
   const value = useMemo<ProfileValue>(
     () => ({
+      ready,
       totalStars,
       progress,
       selectDifficulty(gameId, difficulty) {
-        const current = progress[gameId]
+        const current = snapshot.current.progress[gameId]
         if (!current.unlockedDifficulties.includes(difficulty)) {
           return false
         }
-        setProgress((prev) => ({
-          ...prev,
-          [gameId]: { ...prev[gameId], selectedDifficulty: difficulty },
-        }))
+        if (current.selectedDifficulty === difficulty) {
+          return true
+        }
+
+        const next: ProfileState = {
+          ...snapshot.current,
+          progress: {
+            ...snapshot.current.progress,
+            [gameId]: { ...current, selectedDifficulty: difficulty },
+          },
+        }
+        commit(next, setTotalStars, setProgress, snapshot)
         return true
       },
       recordResult(gameId, difficulty, stars) {
-        setTotalStars((count) => count + stars)
-        setProgress((prev) => {
-          const current = prev[gameId]
-          const previousBest = current.bestStarsByDifficulty[difficulty] ?? 0
-          const unlocked = new Set(current.unlockedDifficulties)
-          if (stars >= 2 && difficulty < 3) {
-            unlocked.add((difficulty + 1) as Difficulty)
-          }
-          return {
-            ...prev,
-            [gameId]: {
-              ...current,
-              timesPlayed: current.timesPlayed + 1,
-              bestStarsByDifficulty: {
-                ...current.bestStarsByDifficulty,
-                [difficulty]: stars > previousBest ? stars : previousBest,
-              },
-              unlockedDifficulties: DIFFICULTIES.filter((level) => unlocked.has(level)),
+        const current = snapshot.current
+        commit(
+          {
+            totalStars: applyStars(current.totalStars, stars),
+            progress: {
+              ...current.progress,
+              [gameId]: applyResult(current.progress[gameId], difficulty, stars),
             },
-          }
-        })
+          },
+          setTotalStars,
+          setProgress,
+          snapshot,
+        )
       },
     }),
-    [progress, totalStars],
+    [progress, ready, totalStars],
   )
 
   return <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>
@@ -84,6 +97,14 @@ export function useProfile() {
   return value
 }
 
-export function bestStarsFor(progress: GameProgress, difficulty: Difficulty): 0 | Stars {
-  return progress.bestStarsByDifficulty[difficulty] ?? 0
+function commit(
+  next: ProfileState,
+  setTotalStars: (value: number) => void,
+  setProgress: (value: Record<GameId, GameProgress>) => void,
+  snapshot: { current: ProfileState },
+) {
+  snapshot.current = next
+  setTotalStars(next.totalStars)
+  setProgress(next.progress)
+  void saveState(next)
 }
