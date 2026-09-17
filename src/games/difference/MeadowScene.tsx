@@ -26,8 +26,8 @@ export function MeadowScene({ side, active }: MeadowProps) {
       {sunDiff && right ? <Moon /> : <Sun />}
       {!birdDiff || !right ? <Bird /> : null}
       <Flower color={flowerDiff && right ? 'var(--color-gold)' : 'var(--color-coral)'} />
-      <Dino x={friendDiff && right ? 128 : 148} />
-      {friendDiff && right ? <Dino x={176} /> : null}
+      <Dino x={friendDiff && right ? 108 : 142} />
+      {friendDiff && right ? <Dino x={164} /> : null}
     </svg>
   )
 }
@@ -46,6 +46,9 @@ function Moon() {
     <path
       d="M196 22 C 176 28, 176 56, 198 58 C 186 52, 184 30, 196 22 Z"
       fill="var(--color-canvas)"
+      stroke="var(--color-gold-deep)"
+      strokeWidth="3"
+      strokeLinejoin="round"
     />
   )
 }
@@ -54,9 +57,11 @@ function Bird() {
   return (
     <g>
       <ellipse cx="64" cy="44" rx="14" ry="9" fill="var(--color-violet)" />
+      <path d="M54 44 Q46 32 62 36" fill="var(--color-violet-deep)" />
       <circle cx="76" cy="40" r="7" fill="var(--color-violet)" />
       <path d="M82 40 L92 38 L82 44 Z" fill="var(--color-gold)" />
-      <circle cx="78" cy="39" r="1.6" fill="var(--color-ink)" />
+      <circle cx="78" cy="39" r="1.8" fill="var(--color-ink)" />
+      <circle cx="78.6" cy="38.4" r="0.6" fill="#fff" />
     </g>
   )
 }
@@ -70,18 +75,37 @@ function Flower({ color }: { color: string }) {
       <circle cx="39" cy="114" r="8" fill={color} />
       <circle cx="39" cy="132" r="8" fill={color} />
       <circle cx="39" cy="124" r="6" fill="var(--color-gold)" />
+      <circle cx="39" cy="124" r="2.4" fill="var(--color-gold-deep)" />
     </g>
   )
 }
 
 function Dino({ x }: { x: number }) {
   return (
-    <g transform={`translate(${x} 108)`}>
-      <ellipse cx="22" cy="36" rx="20" ry="12" fill="var(--color-mascot-body)" />
-      <ellipse cx="12" cy="18" rx="12" ry="10" fill="var(--color-mascot-body)" />
-      <path d="M34 28 C 48 22, 56 30, 50 38" fill="var(--color-mascot-body)" />
-      <circle cx="16" cy="16" r="2.2" fill="var(--color-ink)" />
-      <ellipse cx="12" cy="22" rx="5" ry="3" fill="var(--color-mascot-belly)" />
+    <g transform={`translate(${x} 104) scale(0.62)`}>
+      <path
+        d="M48 40 C 64 34, 78 40, 80 52 C 81 58, 74 60, 62 54 C 54 50, 50 46, 48 42 Z"
+        fill="var(--color-mascot-body)"
+      />
+      <ellipse cx="22" cy="64" rx="10" ry="5" fill="var(--color-mascot-body-shadow)" opacity="0.45" />
+      <ellipse cx="44" cy="64" rx="11" ry="5" fill="var(--color-mascot-body-shadow)" opacity="0.45" />
+      <path d="M16 40 C 12 54, 16 64, 26 64 C 34 64, 36 54, 32 40 Z" fill="var(--color-mascot-body)" />
+      <path d="M34 38 C 30 54, 36 64, 48 64 C 58 64, 58 52, 52 38 Z" fill="var(--color-mascot-body)" />
+      <ellipse cx="38" cy="42" rx="22" ry="16" fill="var(--color-mascot-body)" />
+      <ellipse cx="36" cy="46" rx="12" ry="9" fill="var(--color-mascot-belly)" />
+      <circle cx="28" cy="38" r="4" fill="var(--color-mascot-spots)" />
+      <path d="M8 28 C -2 30, 0 42, 10 44 C 18 45, 24 40, 26 34 Z" fill="var(--color-mascot-body)" />
+      <ellipse cx="22" cy="28" rx="16" ry="14" fill="var(--color-mascot-body)" />
+      <circle cx="24" cy="24" r="4.2" fill="#fff" />
+      <circle cx="25" cy="25" r="2.2" fill="var(--color-ink)" />
+      <circle cx="26" cy="24.2" r="0.8" fill="#fff" />
+      <path
+        d="M6 32 Q 14 38 22 34"
+        fill="none"
+        stroke="var(--color-ink)"
+        strokeWidth="2.2"
+        strokeLinecap="round"
+      />
     </g>
   )
 }

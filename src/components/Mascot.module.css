@@ -57,7 +57,7 @@
 
 .root[data-mood='celebrating'] .svg,
 .root[data-mood='completed'] .svg {
-  animation: mascot-bounce 0.7s var(--ease-toy) infinite;
+  animation: mascot-bounce 0.7s var(--ease-toy) 2;
 }
 
 .root[data-mood='tryAgain'] .svg {
@@ -65,7 +65,7 @@
 }
 
 .starBurst {
-  animation: mascot-bounce 1s var(--ease-toy) infinite;
+  animation: mascot-bounce 1s var(--ease-toy) 2;
 }
 
 @media (prefers-reduced-motion: reduce) {

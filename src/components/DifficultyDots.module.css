@@ -36,7 +36,8 @@
 }
 
 .locked::after {
-  background: #e5dcc8;
+  background: var(--color-locked);
+  box-shadow: inset 0 0 0 3px rgba(90, 70, 40, 0.22);
 }
 
 .dot:focus-visible {
@@ -46,7 +47,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .selected::after {
-    transform: none;
+  .dot {
+    transition: none;
   }
 }
