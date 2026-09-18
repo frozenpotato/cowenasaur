@@ -58,6 +58,7 @@ Home inside the shell is the way out. Browser Back is not a designed exit.
 | Count | `counting` | gold | [games/count.md](games/count.md) |
 | Animals | `identify` | leaf | [games/animals.md](games/animals.md) |
 | Type | `typing` | apricot | [games/type.md](games/type.md) |
+| Pop | `pop` | rose | [games/pop.md](games/pop.md) |
 
 ## Layout
 
@@ -107,7 +108,7 @@ Three mechanic families (plus type):
 | Choice | Count, Words, Animals | `useChoiceRound` (Words/Animals); Count inlines the same loop |
 | Memory | Memory | flip-match reducer in the game |
 | Difference | Spot | dual scenes + hotspots |
-| Type | Type | letter-by-letter in the game |
+| Type | Type, Pop | letter-by-letter / rising letters |
 
 Do not collapse these into one engine.
 
@@ -163,3 +164,4 @@ Skip canvas confetti and hide CSS bits when `prefers-reduced-motion: reduce`.
 - [Count](games/count.md)
 - [Animals](games/animals.md)
 - [Type](games/type.md)
+- [Pop](games/pop.md)

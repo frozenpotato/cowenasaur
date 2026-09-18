@@ -38,6 +38,11 @@
   --shell-edge: var(--color-apricot-deep);
 }
 
+.rose {
+  --shell-accent: var(--color-rose);
+  --shell-edge: var(--color-rose-deep);
+}
+
 .chrome {
   display: grid;
   grid-template-columns: 88px 1fr auto;

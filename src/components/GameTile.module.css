@@ -53,6 +53,11 @@
   --tile-edge: var(--color-apricot-deep);
 }
 
+.rose {
+  --tile-accent: var(--color-rose);
+  --tile-edge: var(--color-rose-deep);
+}
+
 .face {
   display: flex;
   flex-direction: column;

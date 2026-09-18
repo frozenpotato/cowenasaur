@@ -8,6 +8,8 @@ import { IdentifyGame } from '../games/identify/IdentifyGame'
 import { identifyRoundsFor } from '../games/identify/identifyLogic'
 import { MemoryGame } from '../games/memory/MemoryGame'
 import { memoryPairsFor } from '../games/memory/memoryLogic'
+import { PopGame } from '../games/pop/PopGame'
+import { popRoundsFor } from '../games/pop/popLogic'
 import { TypingGame } from '../games/typing/TypingGame'
 import { typingRoundsFor } from '../games/typing/typingLogic'
 import { WordsGame } from '../games/words/WordsGame'
@@ -95,6 +97,8 @@ function PlayField({
       return <DifferenceGame {...props} />
     case 'typing':
       return <TypingGame {...props} />
+    case 'pop':
+      return <PopGame {...props} />
   }
 }
 
@@ -112,5 +116,7 @@ function roundsFor(gameId: GameId, difficulty: Difficulty) {
       return differenceCountFor(difficulty)
     case 'typing':
       return typingRoundsFor(difficulty)
+    case 'pop':
+      return popRoundsFor(difficulty)
   }
 }
