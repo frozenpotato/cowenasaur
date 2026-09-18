@@ -8,6 +8,7 @@ export const PROFILE_ID = 'local'
 export type ProfileRecord = {
   id: typeof PROFILE_ID
   totalStars: number
+  hiddenGameIds?: GameId[]
   createdAt: number
   updatedAt: number
 }

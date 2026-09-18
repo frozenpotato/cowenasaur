@@ -4,6 +4,7 @@ import { DIFFICULTIES, type Difficulty, type GameId, type GameProgress, type Sta
 export type ProfileState = {
   totalStars: number
   progress: Record<GameId, GameProgress>
+  hiddenGameIds: GameId[]
 }
 
 export function freshProgress(): GameProgress {
@@ -24,7 +25,7 @@ export function createProgress(): Record<GameId, GameProgress> {
 }
 
 export function emptyProfileState(): ProfileState {
-  return { totalStars: 0, progress: createProgress() }
+  return { totalStars: 0, progress: createProgress(), hiddenGameIds: [] }
 }
 
 export function applyResult(
@@ -65,4 +66,46 @@ export function applyStars(totalStars: number, stars: Stars): number {
 
 export function bestStarsFor(progress: GameProgress, difficulty: Difficulty): 0 | Stars {
   return progress.bestStarsByDifficulty[difficulty] ?? 0
+}
+
+export function normalizeHiddenGameIds(ids: unknown): GameId[] {
+  if (!Array.isArray(ids)) {
+    return []
+  }
+
+  const hidden: GameId[] = []
+  for (const value of ids) {
+    if (typeof value !== 'string' || hidden.includes(value as GameId)) {
+      continue
+    }
+    if (GAMES.some((game) => game.id === value)) {
+      hidden.push(value as GameId)
+    }
+  }
+
+  if (hidden.length >= GAMES.length) {
+    return []
+  }
+
+  return hidden
+}
+
+export function visibleGames(hiddenGameIds: GameId[]) {
+  const hidden = new Set(hiddenGameIds)
+  const shown = GAMES.filter((game) => !hidden.has(game.id))
+  return shown.length > 0 ? shown : GAMES
+}
+
+export function hideGame(hiddenGameIds: GameId[], gameId: GameId): GameId[] | null {
+  if (hiddenGameIds.includes(gameId)) {
+    return hiddenGameIds
+  }
+  if (GAMES.length - hiddenGameIds.length <= 1) {
+    return null
+  }
+  return [...hiddenGameIds, gameId]
+}
+
+export function showGame(hiddenGameIds: GameId[], gameId: GameId): GameId[] {
+  return hiddenGameIds.filter((id) => id !== gameId)
 }

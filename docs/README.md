@@ -36,12 +36,13 @@ Do not add Next.js, React Router, Tailwind, Redux/Zustand, a mega-engine, or a b
 - Keyboard is a second input that maps onto **visible** controls. Never a hidden shortcut.
 - Games **never** read or write IndexedDB. They call `onMood`, `onRound`, and `onComplete`. `Playing` + `ProfileProvider` persist.
 - There is no `soundEnabled` flag.
+- Dashboard settings (gear, top-left) can hide games from the meadow. Hidden games keep their progress. At least one game must stay visible.
 
 ## Screens
 
 `src/App.tsx` waits for profile `ready`, then shows meadow chrome (sky, sun, hills) around:
 
-1. **Dashboard** (`src/screens/Dashboard.tsx`) — mascot, five tiles from the registry, difficulty dots, star jar.
+1. **Dashboard** (`src/screens/Dashboard.tsx`) — mascot, visible tiles from the registry, difficulty dots, star jar, and a top-left gear that opens settings (show/hide games).
 2. **Playing** (`src/screens/Playing.tsx`) — `GameShell` plus the active game.
 
 Home inside the shell is the way out. Browser Back is not a designed exit.
@@ -66,7 +67,7 @@ Home inside the shell is the way out. Browser Back is not a designed exit.
 src/
   App.tsx
   assets/illustrations/     items.tsx, games.tsx (tile art)
-  components/               Mascot, ToyButton, Star, StarJar, GameTile, DifficultyDots
+  components/               Mascot, ToyButton, Star, StarJar, GameTile, DifficultyDots, SettingsPanel
   games/<id>/               *Game.tsx, *Logic.ts, CSS, extra art
   platform/
     types.ts
@@ -130,8 +131,8 @@ Do not collapse these into one engine.
 ## Persistence
 
 - DB name `cowenasaur`, version 1.
-- Stores: `profile` (key `local`, `totalStars`) and `progress` (key `gameId`).
-- `ProfileProvider` loads on mount, writes on `recordResult` / `selectDifficulty`.
+- Stores: `profile` (key `local`, `totalStars`, optional `hiddenGameIds`) and `progress` (key `gameId`).
+- `ProfileProvider` loads on mount, writes on `recordResult` / `selectDifficulty` / `setGameHidden`. Extra profile fields do not require an IndexedDB version bump.
 - Load/save failures log and fall back to empty in-memory state. Do not crash the child out of play.
 
 ## Shell and celebration

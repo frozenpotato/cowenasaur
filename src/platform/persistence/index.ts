@@ -4,6 +4,7 @@ import {
   applyStars,
   emptyProfileState,
   freshProgress,
+  normalizeHiddenGameIds,
   unlockDifficulty as unlockInProgress,
   type ProfileState,
 } from '../progressState'
@@ -71,6 +72,7 @@ export async function recordResult(
         ...state.progress,
         [gameId]: applyResult(state.progress[gameId], difficulty, result.stars),
       },
+      hiddenGameIds: state.hiddenGameIds,
     }
     await writeState(next)
     return next
@@ -123,6 +125,7 @@ async function readState(): Promise<ProfileState> {
   return {
     totalStars: profile ? normalizeProfile(profile).totalStars : 0,
     progress,
+    hiddenGameIds: profile ? normalizeHiddenGameIds(profile.hiddenGameIds) : [],
   }
 }
 
@@ -134,6 +137,7 @@ async function writeState(state: ProfileState): Promise<void> {
   await tx.objectStore('profile').put({
     id: PROFILE_ID,
     totalStars: Math.max(0, Math.floor(state.totalStars)),
+    hiddenGameIds: normalizeHiddenGameIds(state.hiddenGameIds),
     createdAt: existing?.createdAt ?? now,
     updatedAt: now,
   })
@@ -147,7 +151,7 @@ async function writeState(state: ProfileState): Promise<void> {
 
 function createProfileRecord(totalStars: number): ProfileRecord {
   const now = Date.now()
-  return { id: PROFILE_ID, totalStars, createdAt: now, updatedAt: now }
+  return { id: PROFILE_ID, totalStars, hiddenGameIds: [], createdAt: now, updatedAt: now }
 }
 
 function toProgressRecord(gameId: GameId, progress: GameProgress): ProgressRecord {
@@ -158,6 +162,7 @@ function normalizeProfile(record: ProfileRecord): ProfileRecord {
   return {
     id: PROFILE_ID,
     totalStars: asCount(record.totalStars),
+    hiddenGameIds: normalizeHiddenGameIds(record.hiddenGameIds),
     createdAt: asCount(record.createdAt),
     updatedAt: asCount(record.updatedAt),
   }

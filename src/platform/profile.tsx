@@ -5,6 +5,8 @@ import {
   applyStars,
   createProgress,
   emptyProfileState,
+  hideGame,
+  showGame,
   type ProfileState,
 } from './progressState'
 import type { Difficulty, GameId, GameProgress, Stars } from './types'
@@ -13,8 +15,10 @@ type ProfileValue = {
   ready: boolean
   totalStars: number
   progress: Record<GameId, GameProgress>
+  hiddenGameIds: GameId[]
   selectDifficulty: (gameId: GameId, difficulty: Difficulty) => boolean
   recordResult: (gameId: GameId, difficulty: Difficulty, stars: Stars) => void
+  setGameHidden: (gameId: GameId, hidden: boolean) => boolean
 }
 
 const ProfileContext = createContext<ProfileValue | null>(null)
@@ -23,6 +27,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false)
   const [totalStars, setTotalStars] = useState(0)
   const [progress, setProgress] = useState(createProgress)
+  const [hiddenGameIds, setHiddenGameIds] = useState<GameId[]>([])
   const snapshot = useRef<ProfileState>(emptyProfileState())
 
   useEffect(() => {
@@ -35,6 +40,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
       snapshot.current = loaded
       setTotalStars(loaded.totalStars)
       setProgress(loaded.progress)
+      setHiddenGameIds(loaded.hiddenGameIds)
       setReady(true)
     })
 
@@ -48,6 +54,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
       ready,
       totalStars,
       progress,
+      hiddenGameIds,
       selectDifficulty(gameId, difficulty) {
         const current = snapshot.current.progress[gameId]
         if (!current.unlockedDifficulties.includes(difficulty)) {
@@ -64,7 +71,7 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
             [gameId]: { ...current, selectedDifficulty: difficulty },
           },
         }
-        commit(next, setTotalStars, setProgress, snapshot)
+        commit(next, setTotalStars, setProgress, setHiddenGameIds, snapshot)
         return true
       },
       recordResult(gameId, difficulty, stars) {
@@ -76,14 +83,31 @@ export function ProfileProvider({ children }: { children: ReactNode }) {
               ...current.progress,
               [gameId]: applyResult(current.progress[gameId], difficulty, stars),
             },
+            hiddenGameIds: current.hiddenGameIds,
           },
           setTotalStars,
           setProgress,
+          setHiddenGameIds,
           snapshot,
         )
       },
+      setGameHidden(gameId, hidden) {
+        const current = snapshot.current.hiddenGameIds
+        const nextHidden = hidden ? hideGame(current, gameId) : showGame(current, gameId)
+        if (!nextHidden) {
+          return false
+        }
+        commit(
+          { ...snapshot.current, hiddenGameIds: nextHidden },
+          setTotalStars,
+          setProgress,
+          setHiddenGameIds,
+          snapshot,
+        )
+        return true
+      },
     }),
-    [progress, ready, totalStars],
+    [hiddenGameIds, progress, ready, totalStars],
   )
 
   return <ProfileContext.Provider value={value}>{children}</ProfileContext.Provider>
@@ -101,10 +125,12 @@ function commit(
   next: ProfileState,
   setTotalStars: (value: number) => void,
   setProgress: (value: Record<GameId, GameProgress>) => void,
+  setHiddenGameIds: (value: GameId[]) => void,
   snapshot: { current: ProfileState },
 ) {
   snapshot.current = next
   setTotalStars(next.totalStars)
   setProgress(next.progress)
+  setHiddenGameIds(next.hiddenGameIds)
   void saveState(next)
 }
