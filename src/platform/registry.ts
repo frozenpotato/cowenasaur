@@ -3,6 +3,7 @@ import {
   AnimalsArt,
   CountArt,
   MemoryArt,
+  PopArt,
   SpotArt,
   TypeArt,
   WordsArt,
@@ -23,6 +24,7 @@ export const GAMES: GameDefinition[] = [
   { id: 'counting', label: 'Count', accent: 'gold', Illustration: CountArt },
   { id: 'identify', label: 'Animals', accent: 'leaf', Illustration: AnimalsArt },
   { id: 'typing', label: 'Type', accent: 'apricot', Illustration: TypeArt },
+  { id: 'pop', label: 'Pop', accent: 'rose', Illustration: PopArt },
 ]
 
 export function getGame(id: GameId): GameDefinition {

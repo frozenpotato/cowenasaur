@@ -112,3 +112,74 @@ export function TypeArt({ className }: ArtProps) {
     </svg>
   )
 }
+
+export function PopArt({ className }: ArtProps) {
+  return (
+    <svg className={className} viewBox="0 0 120 88" aria-hidden="true">
+      <circle cx="16" cy="20" r="3" fill="var(--color-gold)" opacity="0.7" />
+      <rect x="102" y="14" width="5" height="8" rx="1.5" fill="var(--color-coral)" opacity="0.65" />
+      <polygon
+        points="38,10 39.5,14.5 44,15 40.5,18 41.8,22.5 38,20 34.2,22.5 35.5,18 32,15 36.5,14.5"
+        fill="var(--color-violet)"
+        opacity="0.75"
+      />
+      <path
+        d="M88 22 a8 8 0 0 1 16 0"
+        fill="none"
+        stroke="var(--color-coral)"
+        strokeWidth="1.6"
+        opacity="0.7"
+      />
+      <path
+        d="M90 22 a6 6 0 0 1 12 0"
+        fill="none"
+        stroke="var(--color-gold)"
+        strokeWidth="1.6"
+        opacity="0.7"
+      />
+      <path
+        d="M92 22 a4 4 0 0 1 8 0"
+        fill="none"
+        stroke="var(--color-sky)"
+        strokeWidth="1.6"
+        opacity="0.7"
+      />
+      <rect x="20" y="42" width="26" height="32" rx="8" fill="var(--color-rose)" />
+      <rect x="47" y="16" width="26" height="34" rx="8" fill="var(--color-gold)" />
+      <rect x="74" y="34" width="26" height="32" rx="8" fill="var(--color-rose)" />
+      <text
+        x="33"
+        y="64"
+        textAnchor="middle"
+        fill="var(--color-ink)"
+        fontFamily="Fredoka, sans-serif"
+        fontSize="20"
+        fontWeight="700"
+      >
+        p
+      </text>
+      <text
+        x="60"
+        y="40"
+        textAnchor="middle"
+        fill="var(--color-ink)"
+        fontFamily="Fredoka, sans-serif"
+        fontSize="20"
+        fontWeight="700"
+      >
+        o
+      </text>
+      <text
+        x="87"
+        y="56"
+        textAnchor="middle"
+        fill="var(--color-ink)"
+        fontFamily="Fredoka, sans-serif"
+        fontSize="20"
+        fontWeight="700"
+      >
+        p
+      </text>
+    </svg>
+  )
+}
