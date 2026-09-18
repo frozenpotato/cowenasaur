@@ -51,6 +51,7 @@ export function PopGame({ difficulty, onMood, onRound, onComplete }: PopGameProp
   const letterEls = useRef(new Map<string, HTMLButtonElement>())
   const skyRef = useRef<HTMLDivElement>(null)
   const typeRef = useRef<(letter: string) => void>(() => {})
+  const popTimersRef = useRef(new Map<string, number>())
   const wave = waves[waveIndex]
 
   function syncLive(next: LiveLetter[]) {
@@ -81,7 +82,12 @@ export function PopGame({ difficulty, onMood, onRound, onComplete }: PopGameProp
 
   useEffect(() => {
     spawnWave(0)
-    return () => window.clearTimeout(timerRef.current)
+    return () => {
+      window.clearTimeout(timerRef.current)
+      for (const timeout of popTimersRef.current.values()) {
+        window.clearTimeout(timeout)
+      }
+    }
   }, [])
 
   useEffect(() => {
@@ -166,6 +172,8 @@ export function PopGame({ difficulty, onMood, onRound, onComplete }: PopGameProp
 
     if (freeze) {
       syncPops([...popsRef.current, { id, letter: entry.letter, x: freeze.x, y: freeze.y }])
+      const timeout = window.setTimeout(() => clearPop(id), 520)
+      popTimersRef.current.set(id, timeout)
       return
     }
 
@@ -186,6 +194,19 @@ export function PopGame({ difficulty, onMood, onRound, onComplete }: PopGameProp
     popLetter(match.id)
   }
 
+  function clearPop(id: string) {
+    const timeout = popTimersRef.current.get(id)
+    if (timeout !== undefined) {
+      window.clearTimeout(timeout)
+      popTimersRef.current.delete(id)
+    }
+    if (!popsRef.current.some((entry) => entry.id === id)) {
+      return
+    }
+    syncPops(popsRef.current.filter((entry) => entry.id !== id))
+    finishWave()
+  }
+
   function handleRiseEnd(id: string, event: AnimationEvent<HTMLButtonElement>) {
     if (event.target !== event.currentTarget) {
       return
@@ -197,8 +218,10 @@ export function PopGame({ difficulty, onMood, onRound, onComplete }: PopGameProp
     if (event.target !== event.currentTarget) {
       return
     }
-    syncPops(popsRef.current.filter((entry) => entry.id !== id))
-    finishWave()
+    if (event.elapsedTime < 0.2) {
+      return
+    }
+    clearPop(id)
   }
 
   typeRef.current = typeLetter
@@ -258,12 +281,10 @@ export function PopGame({ difficulty, onMood, onRound, onComplete }: PopGameProp
         <div
           key={`pop-${entry.id}`}
           className={[styles.letter, styles.popping].join(' ')}
-          style={
-            {
-              '--freeze-x': `${entry.x}px`,
-              '--freeze-y': `${entry.y}px`,
-            } as CSSProperties
-          }
+          style={{
+            left: entry.x,
+            top: entry.y,
+          }}
           aria-hidden="true"
           onAnimationEnd={(event) => handlePopEnd(entry.id, event)}
         >

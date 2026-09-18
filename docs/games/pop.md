@@ -12,7 +12,7 @@ Letters float slowly up the sky. Type or tap a letter to pop it. Dashboard label
 
 Each round is one wave of unique letters that spawn near the bottom and drift up. Smaller confetti, rainbows, and shapes float up behind them and are not tappable.
 
-Correct letter (key that matches a rising tile, or tap on that tile) plays a pop and removes it. Wrong letter key: `tryAgain`, mistake++, letters keep rising. A letter that reaches the top without being popped is a miss and leaves. Non-letter keys (Shift, Space, arrows) are ignored, not mistakes. Key repeat is ignored. No backspace.
+Correct letter (key that matches a rising tile, or tap on that tile) plays a pop (~480ms scale + gold flash) and removes it. Wrong letter key: `tryAgain`, mistake++, letters keep rising. A letter that reaches the top without being popped is a miss and leaves. Non-letter keys (Shift, Space, arrows) are ignored, not mistakes. Key repeat is ignored. No backspace.
 
 When the wave is empty: `celebrating` ~520ms, then the next wave. Last wave goes to `onComplete` instead. Reduced motion parks letters in the sky until typed, tapped, or a long timeout; it skips rise and pop motion.
 

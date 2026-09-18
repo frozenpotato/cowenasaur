@@ -61,12 +61,10 @@
 }
 
 .popping {
-  left: var(--freeze-x);
-  top: var(--freeze-y);
   bottom: auto;
   pointer-events: none;
   transform-origin: center;
-  animation: letter-pop 0.32s var(--ease-toy) forwards;
+  animation: letter-pop 0.48s var(--ease-toy) forwards;
 }
 
 .letter:focus-visible {
@@ -86,17 +84,19 @@
 
 @keyframes letter-pop {
   0% {
-    transform: scale(1);
+    transform: scale(1) rotate(0deg);
     opacity: 1;
   }
 
-  55% {
-    transform: scale(1.28) rotate(-8deg);
+  40% {
+    transform: scale(1.42) rotate(-10deg);
     opacity: 1;
+    background: var(--color-gold);
+    box-shadow: 0 8px 0 var(--color-gold-deep), var(--shadow-warm);
   }
 
   100% {
-    transform: scale(0.2) rotate(12deg);
+    transform: scale(0.12) rotate(16deg);
     opacity: 0;
   }
 }
